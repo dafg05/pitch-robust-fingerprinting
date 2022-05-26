@@ -1,6 +1,7 @@
 # pitch-robust-fingerprinting
 
 Required packages:
+
     pip install librosa
     pip install numpy
     pip install SoundFile
