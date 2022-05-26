@@ -65,10 +65,10 @@ def get_sfp(energy_spec: np.ndarray, frame_num: int) -> BitArray:
     assert len(sfp) == 32, "Something went wrong"
     return sfp
 
-def extract_all_sfps(energy_spec: np.ndarray) -> list:
+def get_fp(energy_spec: np.ndarray) -> list:
     """
-    Calculates subfingerprints from an audio signal
-    given its mel-scaled-spectrogram.
+    Calculates a fingerprint for a whole signal, whcih consists of all subfingerprints 
+    from an audio signal, given its mel-scaled-spectrogram.
 
     @param energy_spec  mel-scaled spectrogram, specifics in get_mel_spec()
 
@@ -119,30 +119,27 @@ def compare_whole_signal(energy_spec1: np.ndarray, energy_spec2: np.ndarray) -> 
     """
     assert energy_spec1.shape == energy_spec2.shape, "Both spectrograms must have equal shape"
     assert energy_spec1.shape[0] == NUM_OF_BANDS, "Both spectrograms must have 33 frequency bins"
-    sfps1 = extract_all_sfps(energy_spec1)
-    sfps2 = extract_all_sfps(energy_spec2)
+    sfps1 = get_fp(energy_spec1)
+    sfps2 = get_fp(energy_spec2)
     return get_BER(sfps1, sfps2)
 
-def extract_shifted_fps(x: np.ndarray, sr: int, st_offset: float, step: float) -> dict:
+def get_robust_fps(x: np.ndarray, sr: int, st_offset: float, step: float) -> dict:
     """
     Extract a robust (to pitch shifitng) set of fingerprints.
     @param x: digital audio signal
     @param sr: sample rate
     @param st_offset: positive number, max number of 
     semitones to shift x by (from zero).
-
     Example: If offset = 1, then the range of semitones
     we'll pitch shift x by will be [-1, 1].
-
     @param step: step size between pitch transformations.
-    
     Example: if step = 0.5 and st_offset = 1, then we'll pitch shift 
     the original signal by -1, -0.5, 0.5, and 1 semitones.
     Example: if step = 0.4 and st_offset = 1, then we'll pitch shift
     the original signal by -1, -0.6,-0.2, 0.2, 0.6, and 1 semitones
 
     Returns:
-    Robust fingerprint dictionary: each entry is a fingerprint indexed
+    Pitch-robust fingerprint dictionary: each entry is a fingerprint indexed
     by the amount of pitch shifting applied to compute said fingerprint
     """
 
@@ -159,10 +156,10 @@ def extract_shifted_fps(x: np.ndarray, sr: int, st_offset: float, step: float) -
     fp_dict = {}
     for i in shift_list:
         if i == 0:
-            fp_dict[i] = extract_all_sfps(get_mel_spec(x, sr))
+            fp_dict[i] = get_fp(get_mel_spec(x, sr))
         else:
             x_shift = pyrb.pitch_shift(x, sr, i)
-            fp_dict[i] = extract_all_sfps(get_mel_spec(x_shift, sr))
+            fp_dict[i] = get_fp(get_mel_spec(x_shift, sr))
 
     return fp_dict
         

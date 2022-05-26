@@ -9,11 +9,15 @@ DEFENSE_TYPES  = ['simple', 'robust']
 
 def test_pitch_attack_robust(audioname: str, n: int):
     """
-    Try evading the pitch-robust fingerprinting scheme by pitch shifting
-    an audio file.
+    Test a pitch attack against the robust fingerprinting scheme.
+    Amount of pitch shifiting (n_sts) in semitones is a random number 
+    in the range: -MAX_ST_OFFSET <= n_sts < MAX_ST_OFFSET
+    See pitch_attack_robust() for details on the attack.
+    
+    @param audioname: Do not include file extension
+    @param n: Number of randomly generated attacks
     """
     
-    print("I AM IN ROBUST")
     f = f = open(f"experiments/robust_results_{audioname}.txt", "w")
     f.write("Testing a pitch shifting attack against pitch robust fingerprinting scheme\n")
     f.write("--------------------------------------------------------------------------\n")
@@ -34,11 +38,17 @@ def test_pitch_attack_robust(audioname: str, n: int):
             f.write("FINGERPRINT_MISS. ATTACK SUCCESSFUL\n")
         f.close
 
-    print(f"Output written on: experiments/robust_results_{audioname}.txt")
+    print(f"Output written on experiments/robust_results_{audioname}.txt")
 
 def test_pitch_attack_simple(audioname: str, n: int):
     """
-    Weh
+    Test a pitch attack against the simple fingerprinting scheme.
+    Amount of pitch shifiting (n_sts) in semitones is a random number 
+    in the range: -MAX_ST_OFFSET <= n_sts < MAX_ST_OFFSET
+    See pitch_attack_simple() for details on the attack.
+    
+    @param audioname: Do not include file extension
+    @param n: Number of randomly generated attacks
     """
 
     f = f = open(f"experiments/simple_results_{audioname}.txt", "w")
@@ -60,7 +70,7 @@ def test_pitch_attack_simple(audioname: str, n: int):
             f.write("FINGERPRINT_MISS. ATTACK SUCCESSFUL\n")
         f.close
 
-    print(f"Output written on: experiments/simple_results_{audioname}.txt")
+    print(f"Output written on experiments/simple_results_{audioname}.txt")
         
 exit = False
 
