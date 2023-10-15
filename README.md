@@ -1,4 +1,4 @@
-# pitch-robust-fingerprinting
+# An audio fingerprinting scheme robust to pitch shifting
 
 Required packages:
 
