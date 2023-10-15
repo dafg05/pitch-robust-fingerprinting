@@ -12,7 +12,7 @@ Original fingerprinting scheme proposed by Haitsma, et. al..
 Link to paper:
 http://ismir2002.ircam.fr/proceedings/02-FP04-2.pdf
 
-See final_paper.pdf for description of pitch-robust fingerprinting scheme.
+**See final_paper.pdf for description of pitch-robust fingerprinting scheme.**
 
 To run a number of simulations of a pitch attack on either the original or pitch-robust fingerprinting scheme, run:
 
